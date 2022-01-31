@@ -3,9 +3,9 @@ import {MessagesType, UserType} from '../types/types'
 
 export const instance = axios.create({
         withCredentials: true,
-        baseURL: 'https://social-network.samuraijs.com/api/1.0/',
+        baseURL: process.env.REACT_APP_SERVER_API_URL,
         headers: {
-            'API-KEY': '7ad07a8c-60db-42f6-95bc-cdf770effbcd'
+            'API-KEY': process.env.REACT_APP_SERVER_API_KEY
         }
     }
 )

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 import s from './Dialogs.module.css'
 import { getMyDialogs, sendMessageReq, startMessaging } from '../../Redux/dialogsReducer'
 import { Message } from './Message'
@@ -8,7 +8,7 @@ import { getDialogsSelect, getMessagesSelect } from '../../Redux/Selectors/dialo
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import { MessagesType } from '../../types/types'
 import { selectCurrentUserId } from '../../Redux/Selectors/auth-selectors'
-import { Link, useHistory, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { SendMessageForm } from './SendMessageForm'
 import Loader from '../common/preloader'
 import { AppStateType } from '../../Redux/redux-store'
@@ -28,7 +28,6 @@ const Dialogs: React.FC = () => {
     const dispatch = useDispatch()
 
     const { userId, redirect } = useParams<{ userId: any, redirect: any }>()
-    const history = useHistory()
 
     const startChat = (id: number) => {
         console.log('chat started')
@@ -49,6 +48,7 @@ const Dialogs: React.FC = () => {
         if (!userId) {
             setMessageMode(false)
         }
+        // eslint-disable-next-line
     }, [userId, redirect])
 
     useEffect(() => {

@@ -4,7 +4,7 @@ import { Avatar, Button, Col, Layout, Popover, Row, Space, Tooltip } from 'antd/
 import { useDispatch, useSelector } from 'react-redux'
 import { selectIsAuth, selectUserLogin } from '../../Redux/Selectors/auth-selectors'
 import { logout } from '../../Redux/auth-reducer'
-import logo from '../../img/Logo.png'
+import logo from '../../img/logo.png'
 import { Typography } from 'antd'
 import { newMessagesCount } from '../../Redux/dialogsReducer'
 import { messagesCount } from '../../Redux/Selectors/dialogs-selectors'
