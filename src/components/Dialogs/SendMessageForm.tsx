@@ -4,35 +4,28 @@ import {Formik} from 'formik'
 
 // const maxLength300 = maxLength(300)
 type PropsType = {
-    onSubmit: (values: any) => void
+    onSubmit: (id: number,values: any) => void
+    id: number
 }
 
-export const SendMessageForm: React.FC<PropsType> = (props) => {
-    const submit: any = (values: any, actions:any) => {
-        props.onSubmit(values)
+export const SendMessageForm: React.FC<PropsType> = ({id, onSubmit}) => {
+    const submit = (values: {body: string}, actions:any) => {
+        onSubmit(id, values.body)
         actions.setSubmitting(false)
         actions.resetForm({values: ''})
     }
     return (
         <Formik
             onSubmit={submit}
-            initialValues={{ newMessageText: '' }}>
+            initialValues={{ body: '' }}>
             {({isSubmitting}) => (
                 <Form style={{display: 'flex'}}>
-                    <Input.TextArea rows={4} name='newMessageText' placeholder='Message' style={{background: 'none', resize: 'none', marginBottom: 10}}/>
+                    <Input.TextArea rows={4} name='body' placeholder='Message' style={{background: 'none', resize: 'none', marginBottom: 10}}/>
                     <SubmitButton disabled={isSubmitting} style={{height: 98,  wordWrap: 'break-word'}}>
                         Send Message
                     </SubmitButton>
                 </Form>
             )}
         </Formik>
-
-        // <form onSubmit={props.handleSubmit} className={s.input}>
-        //     {createField<NewMessageFormKeysType>('enter your message here...', "newMessageText", [required, maxLength300], Textarea, "")}
-        //
-        //     <button className={s.button}>
-        //         Send
-        //     </button>
-        // </form>
     )
 }

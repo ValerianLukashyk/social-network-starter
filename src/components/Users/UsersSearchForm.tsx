@@ -1,9 +1,9 @@
-import {Field, Form, Formik} from 'formik'
+import { Formik} from 'formik'
 import React from 'react'
 import {FilterType} from '../../Redux/usersReducer'
 import {useSelector} from 'react-redux'
-import {getUsersFilter} from '../../Redux/Selectors/users-selectors'
-
+import {Form, Field, SubmitButton} from 'formik-antd'
+import { AppStateType } from '../../Redux/redux-store'
 const UsersSearchFormValidate = (values: any) => {
     const errors = {}
     return errors
@@ -18,14 +18,14 @@ type FormType = {
     friend: FriendFormType
 }
 export const UsersSearchForm: React.FC<PropsType> = React.memo(({onFilterChanged}) => {
-    const filter = useSelector(getUsersFilter)
+    const filter = useSelector((state: AppStateType) => state.usersPage.filter)
 
     const submit = (values: FormType, {setSubmitting}: { setSubmitting: (isSubmitting: boolean) => void }) => {
         const filter:FilterType = {
             term: values.term,
             friend: values.friend === "null" ? null : values.friend === "true" ? true : false
         }
-
+        console.log(filter)
         onFilterChanged(filter)
         setSubmitting(false)
 
@@ -40,15 +40,18 @@ export const UsersSearchForm: React.FC<PropsType> = React.memo(({onFilterChanged
         >
             {({isSubmitting}) => (
                 <Form>
-                    <Field type="text" name="term"/>
-                    <Field name="friend" as="select">
+                    {/*@ts-ignore*/}
+                    <Field style={{width: "65%", border: '1px solid blue', marginRight: 10, outline: 'none'}} type="text" name="term"/>
+                    {/*@ts-ignore*/}
+                    <Field name="friend" as="select" style={{height: 26, width: "20%", border: '1px solid blue', marginRight: 10, outline: 'none'}}>
                         <option value="null">All</option>
                         <option value="true">Followed</option>
                         <option value="false">Unfollowed</option>
                     </Field>
-                    <button type="submit" disabled={isSubmitting}>
+                    {/*@ts-ignore*/}
+                    <SubmitButton  size={'small'} disabled={isSubmitting} style={{width: '10%'}}>
                         Find
-                    </button>
+                    </SubmitButton>
                 </Form>
             )}
         </Formik>

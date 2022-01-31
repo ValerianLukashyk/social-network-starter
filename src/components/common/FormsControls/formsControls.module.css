@@ -1,21 +1,36 @@
 .textArea {
     outline: none;
-    border: none;
     resize: none;
     font-size: 16px;
-    border-radius: 10px 0px 0px 10px;
     display: block;
     width: 100%;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    transition: all 0.3s, height 0s;
+    --antd-wave-shadow-color: #1890ff;
+    background-color: rgba(1, 1, 1, 0);
+    margin-bottom: 3px;
+    height: 100px;
 }
 
 .formControl {
     width: 100%;
 }
 
+.input {
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    transition: all 0.3s, height 0s;
+    --antd-wave-shadow-color: #1890ff;
+    background-color: rgba(1, 1, 1, 0);
+    margin: 5px 0;
+}
+
 .formControl.error input,
 .formControl.error textarea {
     border: solid 1px red;
 }
+
 .formControl.error span {
     color: red;
     font-size: 14px;
@@ -29,6 +44,6 @@
 }
 
 .textArea {
-    height: 80px;
+
 
 }

@@ -26,10 +26,12 @@
 
 .userInfo {
     display: flex;
+    position: relative;
 }
 
 .button {
     color: cornflowerblue;
+
 }
 
 .button button:hover {
@@ -65,6 +67,10 @@
 .text a {
     text-decoration: none;
     color: #4f67ff;
+}
+.text a svg {
+    color: #262626;
+    font-size: 20px;
 }
 .job {
     width: 70px;

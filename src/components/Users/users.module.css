@@ -29,9 +29,6 @@
     height: auto;
 }
 
-.info {
-
-}
 .userBar {
     display: flex;
     justify-content: space-between;
@@ -53,24 +50,30 @@
 .card button {
     transition: all 200ms;
 }
+button {
+    border: none;
+    width: 100px;
+    height: 32px;
+    outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    padding: 0;
+    cursor: pointer;
+}
+.sendMessage {
+    background: yellowgreen;
+}
+.sendMessage:hover {
+    background: yellow;
+}
 .follow {
     background: rgb(180, 217, 255);
-    border: none;
-    border-radius: 5px;
-    width: 30px;
-    height: 30px;
-    outline: none;
-    margin-left: 20px;
 }
 
 .unfollow {
     background: rgb(255, 106, 37);
-    border: none;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    outline: none;
-    margin-left: 20px;
 }
 
 .unfollow:hover {

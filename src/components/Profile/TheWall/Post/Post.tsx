@@ -1,8 +1,8 @@
-import s from "./Post.module.css";
-import React, {useState} from "react";
-import {NavLink} from "react-router-dom";
-import dltButton from "../../../../img/deletePost.png"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import s from './Post.module.css'
+import React, {useState} from 'react'
+import {NavLink} from 'react-router-dom'
+import {DeleteOutlined, ExclamationCircleOutlined, LikeFilled, LikeOutlined} from '@ant-design/icons'
+import {Card, Space, Modal, Tooltip} from 'antd/lib'
 
 type PropsType = {
     userID: number | null
@@ -13,26 +13,61 @@ type PropsType = {
 }
 
 const Post: React.FC<PropsType> = (props) => {
-    const [likesCount, setLikesCount] = useState(props.like);
+    const [likesCount, setLikesCount] = useState(props.like)
+    const [liked, setLiked] = useState(false)
+    const {userID, deletePost} = props
+    
+    const likePost = () => {
+        setLikesCount(likesCount + 1)
+        setLiked(true)
+    }
+    const dislikePost = () => {
+        setLikesCount(likesCount - 1)
+        setLiked(false)
+    }
 
-    const {userID} = props;
+    function showDeleteConfirm() {
+        // @ts-ignore
+        Modal.confirm({
+            centered: true,
+            title: 'Delete',
+            icon: <ExclamationCircleOutlined/>,
+            content: 'Are you sure wanna delete this post?',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk() {
+                deletePost(props.id)
+            },
+            onCancel() {
+
+            },
+        })
+    }
 
     return (
-        <div className={s.postContainer}>
-            <div className={s.post}>
-                 {/*@ts-ignore*/}
-                <NavLink to={/profile/ + userID}>
+        <Card style={{width: '100%', marginBottom: 10, borderRadius: 7, position: 'relative', padding: 0}}
+              className={s.post}>
+            <Space style={{alignItems: 'flex-start'}}>
+                <NavLink to={'/profile/' + userID}>
                     <img className={s.avatar}
-                         src={"https://social-network.samuraijs.com/activecontent/images/users/" + props.userID + "/user.jpg?v=6"}
-                         alt={"avatar"}/>
+                         src={'https://social-network.samuraijs.com/activecontent/images/users/' + props.userID + '/user.jpg?v=6'}
+                         alt={'avatar'}/>
                 </NavLink>
-                <div className={s.text}>{props.message}</div>
-                <div className={s.buttons}>
-                    <img onClick={() => {props.deletePost(props.id)}} className={s.delete} src={dltButton} alt={'delete'}/>
+                <div style={{display: 'flex', flexDirection: 'column', textAlign: 'start', fontSize: '1.3em'}}>
+                    <span style={{lineHeight: 1.2}}>{props.message}</span>
+                    {!liked ?
+                        <div onClick={likePost} className={s.like}><b>{likesCount} </b><LikeOutlined
+                            style={{fontSize: '20px', color: '#08c'}}/></div>
+                        : <div onClick={dislikePost} className={s.like}><b>{likesCount} </b><LikeFilled
+                            style={{fontSize: '20px', color: '#08c'}}/></div>
+                    }
                 </div>
-            </div>
-            <div onClick={() => setLikesCount(likesCount + 1)} className={s.like}><b>{likesCount} </b><FontAwesomeIcon icon={['far', 'thumbs-up']}/></div>
-        </div>
-    );
-};
-export default Post;
+                <Tooltip title="Delete post"><DeleteOutlined style={{fontSize: 17, position: 'absolute', right: '10px', top: '10px', color: 'red'}}
+                                                             onClick={showDeleteConfirm}/></Tooltip>
+
+            </Space>
+        </Card>
+    )
+}
+export default Post

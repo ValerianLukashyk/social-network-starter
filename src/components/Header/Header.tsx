@@ -1,63 +1,86 @@
-import React from 'react'
-import {Link} from 'react-router-dom'
-import {Avatar, Button, Col, Layout, Menu, Popover, Row, Space, Tooltip} from 'antd/lib/'
-import {HomeOutlined, MessageOutlined, UsergroupAddOutlined, UserOutlined, WechatOutlined} from '@ant-design/icons'
-import {useDispatch, useSelector} from 'react-redux'
-import {selectIsAuth, selectUserLogin} from '../../Redux/Selectors/auth-selectors'
-import {logout} from '../../Redux/auth-reducer'
-import logo from '../../img/logo_hooks.png'
-import Title from 'antd/lib/typography/Title';
-
-export type PropsType = {
-}
+import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { Avatar, Button, Col, Layout, Popover, Row, Space, Tooltip } from 'antd/lib/'
+import { useDispatch, useSelector } from 'react-redux'
+import { selectIsAuth, selectUserLogin } from '../../Redux/Selectors/auth-selectors'
+import { logout } from '../../Redux/auth-reducer'
+import logo from '../../img/Logo.png'
+import { Typography } from 'antd'
+import { newMessagesCount } from '../../Redux/dialogsReducer'
+import { messagesCount } from '../../Redux/Selectors/dialogs-selectors'
+import { RiLogoutCircleRLine, RiMailUnreadFill, RiMailOpenLine } from 'react-icons/ri'
+import { ImUser } from 'react-icons/im'
+const { Title } = Typography
+export type PropsType = {}
 
 export const AppHeader: React.FC<PropsType> = (props) => {
-
+    const { Header } = Layout
     const isAuth = useSelector(selectIsAuth)
     const login = useSelector(selectUserLogin)
-    // const id = useSelector(selectCurrentUserId)
     const dispatch = useDispatch()
+    const newMessages = useSelector(messagesCount)
+
+    useEffect(() => {
+        dispatch(newMessagesCount())
+    }, [dispatch])
 
     const logoutCallback = () => {
         dispatch(logout())
     }
-    const {Header} = Layout
+
     const content = (
-    <div>
-        <p>New Messages(10)</p>
-        <p>New Posts(2)</p>
-    </div>
+        <div >
+            <Link to={'/dialogs'} style={{ display: 'flex', alignItems: 'center' }}>
+                {newMessages && newMessages > 0
+                    ?
+                    <RiMailUnreadFill size={18} />
+                    :
+                    <RiMailOpenLine size={18} />
+                }
+                Messages ({newMessages})
+            </Link>
+        </div>
+    )
+    const title = (
+        <Link to={'/profile'}>{login}</Link>
     )
     return (
-        <Header className='header'>
+        <Header className={'header'} style={{ backgroundColor: '#373a47', position: 'fixed', width: '100%', zIndex: 10 }}>
             <Row justify="space-between">
-                <Col span={8}>
-                    <Space><img style={{width: 40}} src={logo} alt="Logo"/>
-                        <Title level={3} style={{color: "white", margin: 10}}>FriendHook</Title>
-                    </Space>
+                <Col span={16}>
+                    <Link to="/">
+                        <Space>
+                            <img style={{ width: 70 }} src={logo} alt="Logo" />
+                            <Title level={3} style={{ color: '#e7e7e7', margin: 10 }}>HOOKER</Title>
+                        </Space>
+                    </Link>
                 </Col>
-                <Col span={8}>
-                    <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-                        <Menu.Item key="1"><Tooltip title="Profile"><Link to="/profile"><HomeOutlined
-                            style={{fontSize: 24, margin: 0}}/></Link></Tooltip></Menu.Item>
-                        <Menu.Item key="2"><Tooltip title="Messages"><Link to="/dialogs"><MessageOutlined
-                            style={{fontSize: 26, margin: 0}}/></Link></Tooltip></Menu.Item>
-                        <Menu.Item key="3"><Tooltip title="Users"><Link to="/users"><UsergroupAddOutlined
-                            style={{fontSize: 24, margin: 0}}/></Link></Tooltip></Menu.Item>
-                        <Menu.Item key="4"><Tooltip title="General Chat"><Link to="/chat"><WechatOutlined
-                            style={{fontSize: 28, margin: 0}}/></Link></Tooltip></Menu.Item>
-                    </Menu>
-                </Col>
-                <Col span={4}>
+                <Col span={6}>
                     {isAuth
-                        ? <Space><Popover content={content} title={login}>
-                            <Avatar style={{backgroundColor: '#41b4e9', }} icon={<UserOutlined/>}/>
-                        </Popover>
-                            <Button onClick={logoutCallback} type="primary" danger>Logout</Button></Space>
-                        : <Button><Link to={'/login'}>Login</Link></Button>
+                        ?
+                        <Space align="center">
+                            <Popover overlayInnerStyle={{ color: 'white' }} color={'#373a47'} style={{ backgroundColor: '#373a47', color: 'white' }} content={content} title={title}>
+                                <Avatar
+                                    style={{ backgroundColor: 'transparent', }}
+                                    size={{ xs: 25, sm: 30, md: 35, lg: 40, xl: 45, xxl: 47 }}
+                                    icon={<ImUser size={30} />}
+                                />
+                            </Popover>
+                            <Tooltip title={'LogOut'} >
+                                <Button style={{ verticalAlign: '-8px' }} onClick={logoutCallback} ghost shape="circle" icon={<RiLogoutCircleRLine size={25} />} />
+                            </Tooltip>
+                        </Space>
+                        :
+                        <Link to={'/login'}>
+                            <Button>
+                                Login
+                            </Button>
+                        </Link>
                     }
                 </Col>
+
             </Row>
         </Header>
     )
 }
+

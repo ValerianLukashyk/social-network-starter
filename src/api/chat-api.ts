@@ -43,7 +43,7 @@ function createChannel() {
     socket.addEventListener('message', messageHandler)
     socket.addEventListener('open', openHandler)
     socket.addEventListener('error', errorHandler)
-
+    console.log(socket)
 }
 
 export const chatAPI = {

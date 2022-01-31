@@ -1,30 +1,45 @@
 import s from "./Profile.module.css";
 import ProfileInfo from "./ProfileData/ProfileInfo";
-import React from "react";
-import TheWallContainer from "./TheWall/TheWallContainer";
-import {ProfileType} from "../../types/types";
+import React, { useEffect, useCallback } from "react";
+import { useHistory } from "react-router-dom";
+import TheWall from "./TheWall/TheWall";
+import { useParams } from "react-router-dom";
+import { useSelector, useDispatch} from 'react-redux'
+import { AppStateType } from "../../Redux/redux-store";
+import {getUserProfile, getStatus, } from '../../Redux/profileReducer'
 
-type PropsType = {
-    profile: ProfileType | null
-    status: string
-    updateStatus: (status: string) => void
-    isOwner: boolean
-    savePhoto: (file: File) => void
-    saveProfile: (profile:ProfileType) => Promise<any>
-}
+const Profile: React.FC = () => {
+    const id = useSelector((state: AppStateType) => state.auth.id)
+    const dispatch = useDispatch()
+    const params = useParams<{userID?: any}>()
+    const history = useHistory()
+    
+    const refreshProfile = useCallback(() => {
+        let user: number | null = params.userID
+        
+        if (!user) {
+            user = id
+            if (!user) {
+                //TODO: replace push with redirect
+                history.push("/login")
+            }
+        }
+        if (user) {
+            dispatch(getUserProfile(user))
+            dispatch(getStatus(user))
+        } else {
+            console.error("ID should exists in URI params or in state ('authorizedUserID')")
+        }
+    },[dispatch, params.userID, history, id])
 
-const Profile: React.FC<PropsType> = (props) => {
+    useEffect(()=>{
+        refreshProfile()
+    }, [refreshProfile])
 
     return (
         <div className={s.content}>
-            <ProfileInfo {...props}
-                saveProfile={props.saveProfile}
-                savePhoto={props.savePhoto}
-                isOwner={props.isOwner}
-                profile={props.profile}
-                status={props.status}
-                updateStatus={props.updateStatus}/>
-            <TheWallContainer />
+            <ProfileInfo />
+            <TheWall />
         </div>
     );
 };

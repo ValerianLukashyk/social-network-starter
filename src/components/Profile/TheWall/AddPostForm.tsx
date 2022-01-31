@@ -1,4 +1,3 @@
-import React from 'react'
 import {Form, Input, SubmitButton} from 'formik-antd'
 import {Formik} from 'formik'
 
@@ -12,8 +11,6 @@ export const AddPostForm: any = (props): any => {
         actions.resetForm({values: ''})
     }
 
-
-    //
     return (
         <Formik
             onSubmit={submit}
@@ -29,14 +26,5 @@ export const AddPostForm: any = (props): any => {
                 </Form>
             )}
         </Formik>
-
-
-        // <form onSubmit={props.handleSubmit} className={s.input}>
-        //     {createField<AddPostFormValuesKeysType>('Enter your post', "newPostText", [required, maxLength100], Textarea, "")}
-        //     <button className={s.button}>
-        //         Add post
-        //     </button>
-        // </form>
     )
 }
-// export const AddPostReduxForm = reduxForm<AddPostValuesType, PropsType>({form: 'AddPost'})(AddPostForm)

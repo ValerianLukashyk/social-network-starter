@@ -1,12 +1,5 @@
 .header {
-    border-radius: 0px 0px 10px 10px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.24);
-    grid-area: h;
-    background-color: #0d6e00a4;
-    display: flex;
-    align-items: center;
-    vertical-align: center;
-    width: 101%;
+    background: #00150A;
 }
 
 .title {
@@ -17,7 +10,6 @@
 .image {
     margin: 8px;
     width: 45px;
-
 }
 
 .log {

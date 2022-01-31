@@ -13,9 +13,9 @@ let initialState = {
 
 const chatReducer = (state = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
-        case 'SN/chat/MESSAGES-RECEIVED':
-            debugger
+        case 'SN/chat/MESSAGES_RECEIVED':
             return {
+
                 ...state,
                 messages: [...state.messages, ...action.payload.messages.map( (m) => ({...m, id: v1()}))]
                     .filter((m, index, array) => index >= array.length - 100)
@@ -34,7 +34,7 @@ const chatReducer = (state = initialState, action: ActionsType): InitialStateTyp
 
 export const actions = {
     messagesReceived: (messages: ChatMessageAPIType[]) => ({
-        type: 'SN/chat/MESSAGES-RECEIVED',
+        type: 'SN/chat/MESSAGES_RECEIVED',
         payload: {messages}
     } as const),
     statusChanged: (status: StatusType) => ({
@@ -63,7 +63,7 @@ const newStatusChangedHandlerCreator = (dispatch: Dispatch) => {
             dispatch(actions.statusChanged(status))
         }
     }
-    return _newMessageHandler
+    return _statusChangedHandler
 }
 
 export const startMessagesListening = (): ThunkType => async (dispatch) => {

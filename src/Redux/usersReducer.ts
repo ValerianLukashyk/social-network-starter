@@ -6,7 +6,7 @@ import {APIResponseType} from '../api/api'
 
 let initialState = {
     users: [] as Array<UserType>,
-    pageSize: 30,
+    pageSize: 20,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: true,
@@ -65,7 +65,7 @@ const usersReducer = (state = initialState, action: ActionsType): InitialStateTy
             }
         }
         case 'SN/users/SET_FILTER': {
-            return {...state, filter: action.payload}
+            return {...state, filter: action.filter}
         }
         default:
             return state
@@ -80,7 +80,7 @@ export const actions = {
     setCurrentPage: (currentPage: number) => ({type: 'SN/users/SET_CURRENT_PAGE', currentPage} as const),
     setPageSize: (pageSize: number) => ({type: 'SN/users/SET_PAGE_SIZE', pageSize} as const),
     setTotalUsersCount: (count: number) => ({type: 'SN/users/SET_TOTAL_USERS_COUNT', count} as const),
-    setFilter: (filter: FilterType) => ({type: "SN/users/SET_FILTER", payload: filter} as const),
+    setFilter: (filter: FilterType) => ({type: "SN/users/SET_FILTER", filter} as const),
     toggleIsFetching: (isFetching: boolean) => ({type: 'SN/users/TOGGLE_IS_FETCHING', isFetching} as const),
     toggleFollowingProgress: (isFetching: boolean, userID: number) => ({
         type: 'SN/users/TOGGLE_IS_FOLLOWING_PROGRESS',
@@ -99,9 +99,10 @@ export const requestUsers = (page: number, pageSize: number, filter: FilterType)
         dispatch(actions.setFilter(filter))
 
         let data = await usersAPI.getUsers(page, pageSize, filter.term, filter.friend)
-        dispatch(actions.toggleIsFetching(false))
+        
         dispatch(actions.setUsers(data.items))
         dispatch(actions.setTotalUsersCount(data.totalCount))
+        dispatch(actions.toggleIsFetching(false))
     }
 }
 const _followUnfollowFlow = async (dispatch: Dispatch<ActionsType>, userID: number, apiMethod: (userId:number)=> Promise<APIResponseType>, actionCreator: (userId: number) => ActionsType) => {

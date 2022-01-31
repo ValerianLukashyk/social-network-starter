@@ -1,33 +1,45 @@
 .dialogs {
-    display: grid;
-    grid-template-columns: 2fr 10fr;
+    margin: auto;
+    padding: 10px;
+    height: 100%;
 }
 
 .active {
-    color: gold;
-    border: none;
+    background-color: rgba(107, 158, 245, 0.57);
+}
+
+.dialog span {
+    position: absolute;
+    right: 20px;
 }
 
 .dialog {
-    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.205);
-    margin: 10px;
+    display: flex;
+    justify-content: normal;
+    align-items: center;
+    box-shadow: 0 3px 4px 0px rgba(55, 55, 55, 0.2);
+    margin-bottom: 10px;
     border-radius: 10px;
     padding: 10px;
-    background-color: rgba(103, 184, 255, 0.575);
+    background-color: rgba(213, 235, 255, 0.57);
 }
+
 .dialog:hover {
     background-color: rgba(255, 170, 59, 0.575);  
 }
+
 .dialog a {
     text-decoration: none;
     color:white;
 }
+
 .field {
     border-radius: 10px;
     display: flex;
     justify-content: center;
     box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.205);
 }
+
 .input {
     justify-content: center;
     margin: 10px;
@@ -35,6 +47,7 @@
     border-radius: 10px;
     box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.205);
 }
+
 .button {
     cursor: pointer;
     outline: none;
@@ -56,13 +69,68 @@
     box-shadow: 0 0 5px rgba(138, 138, 138, 0.24);
 }
 
-.message {
-    box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.205);
+.userMessage {
+    display: flex;
+    justify-content: flex-start;
+    box-shadow: 0 3px 4px 0px rgba(55, 55, 55, 0.2);
     margin: 10px;
-    padding: 10px;
+    padding: 5px;
     background-color: rgba(255, 126, 103, 0.479);
     border-radius: 10px;
     text-overflow: clip;
     overflow-wrap: break-word;
     word-break:break-all;
+}
+
+.myMessage {
+    display: flex;
+    align-self: flex-end;
+    box-shadow: 0 3px 4px 0px rgba(55, 55, 55, 0.2);
+    margin: 10px;
+    padding: 5px;
+    background-color: rgb(40, 184, 250);
+    border-radius: 10px;
+    text-overflow: clip;
+    overflow-wrap: break-word;
+    word-break:break-all;
+}
+
+.flexEnd {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.flexStart {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.messageContainer {
+    min-height: 61vh;
+    position: relative;
+    border: 1px #cfcfcf solid;
+    border-radius: 3px 3px 0 0;
+    border-bottom: none;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.dialogsHeight {
+    height: 100%;
+}
+
+.backArrow {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 40px;
+    font-size: 18px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 300ms;
+}
+
+.backArrow:hover {
+    background-color: #b4d9ff;
+    border-radius: 7px;
 }

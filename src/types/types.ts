@@ -35,7 +35,16 @@ export type UserType = {
     photos: PhotosType
     followed: boolean
 }
-
+export type MessagesType = {
+    id: string
+    body: string
+    translatedBody: null
+    addedAt: string
+    senderId: number
+    senderName: string
+    recipientId: number
+    viewed: boolean
+}
 export type ToggleIsFetchingType = {
     type: "TOGGLE_IS_FETCHING"
     isFetching: boolean
