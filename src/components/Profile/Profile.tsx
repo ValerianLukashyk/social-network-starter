@@ -7,9 +7,11 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch} from 'react-redux'
 import { AppStateType } from "../../Redux/redux-store";
 import {getUserProfile, getStatus, } from '../../Redux/profileReducer'
+import Loader from "../common/preloader";
 
 const Profile: React.FC = () => {
     const id = useSelector((state: AppStateType) => state.auth.id)
+    const isFetching = useSelector((state: AppStateType) => state.profilePage.isFetching)
     const dispatch = useDispatch()
     const params = useParams<{userID?: any}>()
     const history = useHistory()
@@ -35,6 +37,8 @@ const Profile: React.FC = () => {
     useEffect(()=>{
         refreshProfile()
     }, [refreshProfile])
+
+    if(isFetching) return <Loader minHeight={'70vh'}/>
 
     return (
         <div className={s.content}>

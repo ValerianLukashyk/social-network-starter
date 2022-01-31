@@ -4,7 +4,7 @@ import User from './User'
 import { UsersSearchForm } from './UsersSearchForm'
 import { FilterType, follow, requestUsers, unfollow } from '../../Redux/usersReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import {getUsers} from '../../Redux/Selectors/users-selectors'
+import { getUsers } from '../../Redux/Selectors/users-selectors'
 import { useHistory } from 'react-router-dom'
 import * as queryString from 'querystring'
 import Space from 'antd/lib/space'
@@ -21,7 +21,7 @@ export const Users: FC = () => {
     const [pageSize, setPageSize] = useState(useSelector((state: AppStateType) => state.usersPage.pageSize))
     const [currentPage, setCurrentPage] = useState(useSelector((state: AppStateType) => state.usersPage.currentPage))
     const [filter, setFilter] = useState(useSelector((state: AppStateType) => state.usersPage.filter))
-    
+
     const totalUsersCount = useSelector((state: AppStateType) => state.usersPage.totalUsersCount)
     const users = useSelector(getUsers)
     const isAuth = useSelector((state: AppStateType) => state.auth.isAuth)
@@ -49,7 +49,7 @@ export const Users: FC = () => {
     useEffect(() => {
         const query: QueryParamsType = {}
         if (!!filter.term) query.term = filter.term
-        if (filter.friend) {query.friend = String(filter.friend)}
+        if (filter.friend) { query.friend = String(filter.friend) }
         if (currentPage !== 1) query.page = String(currentPage)
 
         history.push({
@@ -58,9 +58,9 @@ export const Users: FC = () => {
         })
     }, [filter, currentPage, history])
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(requestUsers(currentPage, pageSize, filter))
-    },[currentPage, dispatch, pageSize, filter])
+    }, [currentPage, dispatch, pageSize, filter])
 
     const onPageChanged = (pageNumber: number) => {
         setCurrentPage(pageNumber)
@@ -76,16 +76,16 @@ export const Users: FC = () => {
         console.log(filter)
         setFilter(filter)
     }
-    
+
     const followUser = (userId: number) => {
         dispatch(follow(userId))
     }
     const unfollowUser = (userId: number) => {
         dispatch(unfollow(userId))
     }
-    
+
     return <div className={styles.body}>
-        <Space direction={'vertical'} style={{width: '100%'}}>
+        <Space direction={'vertical'} style={{ width: '100%', minHeight: '50vh' }}>
             <Pagination
                 style={{ marginTop: 10 }}
                 onChange={onPageChanged}
@@ -95,13 +95,15 @@ export const Users: FC = () => {
                 onShowSizeChange={onPageSizeChanged}
             />
             <UsersSearchForm onFilterChanged={onFilterChanged} />
+
             {isFetching
-                ?
-                <Loader />
+                ? (
+                    <Loader minHeight={'60vh'}/>
+                )
                 :
-                <div>
-                    <Space direction={'vertical'} style={{width: '100%'}}>
-                        {users.map((u, i) =>
+                <Space direction={'vertical'} style={{ width: '100%' }}>
+                    {
+                        users.map((u, i) =>
                             <User user={u}
                                 key={u.id}
                                 isAuth={isAuth}
@@ -109,9 +111,8 @@ export const Users: FC = () => {
                                 follow={followUser}
                                 unfollow={unfollowUser}
                             />)
-                        }
-                    </Space>
-                </div>
+                    }
+                </Space>
             }
             <Pagination
                 onChange={onPageChanged}

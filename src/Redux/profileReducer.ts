@@ -17,7 +17,8 @@ let initialState = {
     ] as Array<PostType>,
     profile: null as ProfileType | null,
     status: "",
-    theWallPost: ""
+    theWallPost: "",
+    isFetching: true
 }
 
 
@@ -47,6 +48,9 @@ const profileReducer = (state = initialState, action: ActionsType): InitialState
         case "SN/profile/SET_USER_PROFILE": {
             return { ...state, profile: action.profile }
         }
+        case "SN/profile/SET_IS_FETCHING": {
+            return { ...state, isFetching: action.isFetching }
+        }
         case "SN/profile/SET_STATUS": {
             return { ...state, status: action.status }
         }
@@ -65,18 +69,30 @@ export const actions = {
     setUserProfile: (profile: ProfileType) => ({ type: "SN/profile/SET_USER_PROFILE", profile } as const),
     setStatus: (status: string) => ({ type: "SN/profile/SET_STATUS", status } as const),
     savePhotoSuccess: (photos: PhotosType) => ({ type: "SN/profile/SAVE_PHOTO_SUCCESS", photos } as const),
+    setFetching: (isFetching: boolean) => ({ type: "SN/profile/SET_IS_FETCHING", isFetching} as const)
 }
 
 //Thunks
 export const addPostThunk = (theWallPost: string): ThunkType => async (dispatch) => {
+    dispatch(actions.setFetching(true))
     dispatch(actions.addPost(theWallPost));
+    dispatch(actions.setFetching(false))
 }
 export const deletePostThunk = (id: number): ThunkType => async (dispatch) => {
+    dispatch(actions.setFetching(true))
+
     dispatch(actions.deletePost(id));
+    dispatch(actions.setFetching(false))
+
 }
 export const getUserProfile = (userID: number): ThunkType => async (dispatch) => {
+    dispatch(actions.setFetching(true))
+
     const data = await profileAPI.getProfile(userID)
     dispatch(actions.setUserProfile(data))
+
+    dispatch(actions.setFetching(false))
+
 };
 export const getStatus = (userID: number): ThunkType => async (dispatch) => {
     let data = await profileAPI.getStatus(userID)

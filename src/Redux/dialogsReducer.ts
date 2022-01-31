@@ -66,9 +66,11 @@ export const actions = {
 }
 
 export const getMyDialogs = (): ThunkType => async (dispatch) => {
+
     const data = await dialogsAPI.getDialogs()
     // @ts-ignore
     dispatch(actions.setAllDialogs(data))
+
 };
 
 export const getMyMessages = (userId: number, page: number, count: number | null): ThunkType => async (dispatch) => {

@@ -106,9 +106,7 @@ const App: React.FC = () => {
 
     const catchAllUnhandledErrors = (e: PromiseRejectionEvent) => {
         alert(JSON.stringify(e.reason.message))
-        
         console.log(e)
-        // return <Alert message={e}/>
     }
 
     useEffect(() => {
@@ -123,7 +121,7 @@ const App: React.FC = () => {
 
 
     if (!initialized) {
-        return <Loader />
+        return <Loader minHeight={'90vh'}/>
     }
     return (
         <Layout className="layout" style={{ minHeight: '100vh' }}>

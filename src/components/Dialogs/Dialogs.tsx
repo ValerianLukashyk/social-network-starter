@@ -19,6 +19,7 @@ export type NewMessageFormValuesType = {
 }
 
 const Dialogs: React.FC = () => {
+    const [isDialogs, setIsDialogs] = useState(false)
     const [messageMode, setMessageMode] = useState(false)
     const [actualId, setActualId] = useState(0)
     const dialogs = useSelector(getDialogsSelect)
@@ -30,20 +31,14 @@ const Dialogs: React.FC = () => {
     const { userId, redirect } = useParams<{ userId: any, redirect: any }>()
 
     const startChat = (id: number) => {
-        console.log('chat started')
         setMessageMode(true)
         dispatch(startMessaging(id, 1, null))
         setActualId(id)
     }
 
-
-
     useEffect(() => {
         if (userId) {
-
             startChat(userId)
-
-
         }
         if (!userId) {
             setMessageMode(false)
@@ -54,6 +49,7 @@ const Dialogs: React.FC = () => {
     useEffect(() => {
         dispatch(getMyDialogs())
         setMessageMode(false)
+        setIsDialogs(true)
     }, [dispatch])
 
     let dialogsElements = dialogs.map((dialog, index) => (
@@ -71,21 +67,25 @@ const Dialogs: React.FC = () => {
 
     return (
         <div className={s.dialogs}>
-            {!messageMode ?
-                <div>{dialogsElements}</div> :
-                (<div className={s.dialogsHeight}>
+            {
+                !messageMode 
+                    ?
+                    isDialogs ? dialogsElements : <Loader minHeight={'65vh'}/>
+                    :
+                    <div className={s.dialogsHeight}>
 
-                    <div className={s.messageContainer}>
-                        {isFetching
-                            ?
-                            <Loader />
-                            :
-                            messagesElements
-                        }
-                        <Link to={'/Dialogs'} className={s.backArrow} ><ArrowLeftOutlined /></Link>
+                        <div className={s.messageContainer}>
+                            {isFetching
+                                ?
+                                <Loader minHeight={'65vh'} />
+                                :
+                                messagesElements
+                            }
+                            <Link to={'/Dialogs'} className={s.backArrow} ><ArrowLeftOutlined /></Link>
+                        </div>
+                        <SendMessageForm id={actualId} onSubmit={sendMessage} />
                     </div>
-                    <SendMessageForm id={actualId} onSubmit={sendMessage} />
-                </div>)}
+            }
 
         </div>
     )
